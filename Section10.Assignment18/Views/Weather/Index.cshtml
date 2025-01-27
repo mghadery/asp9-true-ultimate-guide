@@ -1,0 +1,16 @@
+﻿@model List<CityWeather>
+@{
+    string title = "Weather List";
+    ViewBag.Title = title;
+}
+<div class="flex">
+    @foreach (CityWeather cityWeather in Model)
+    {
+        ViewDataDictionary viewData = new(ViewData);
+        viewData.Clear();
+        viewData["ShowDate"] = false;
+        viewData["ShowDetailsLink"] = true;
+
+        <partial name="_CityWeather" model="cityWeather" view-data="viewData"></partial>
+    }
+</div>
