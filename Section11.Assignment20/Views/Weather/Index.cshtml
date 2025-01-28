@@ -1,0 +1,11 @@
+﻿@model List<CityWeather>
+@{
+    string title = "Weather List";
+    ViewBag.Title = title;
+}
+<div class="flex">
+    @foreach (CityWeather cityWeather in Model)
+    {
+        <vc:city-weather city-weather-info="cityWeather" show-date=false show-details-link=true></vc:city-weather>
+    }
+</div>
