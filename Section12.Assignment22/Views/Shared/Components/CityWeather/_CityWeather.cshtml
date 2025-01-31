@@ -1,0 +1,46 @@
+﻿@model Section12.Assignment22.Models.CityWeather
+
+@{
+    string bkg = ViewBag.TempCat switch
+    {
+        1 => "blue-back",
+        2 => "green-back",
+        _ => "orange-back"
+    };
+    var time = ViewBag.Time;
+    var date = ViewBag.Date;
+    bool showDate = ViewBag.ShowDate;
+    bool showDetailsLink = ViewBag.ShowDetailsLink;
+}
+
+<div class="box w-30 margin-auto @bkg">
+    <table class="w-100">
+        <tr>
+            <td class="padding-left-45 w-50">
+                <div>
+                    @Model.CityName
+                </div>
+                @if (showDate)
+                {
+                    <div class="text-dark-grey">
+                        @date
+                    </div>
+                }
+                <div class="text-dark-grey">
+                    @time
+                </div>
+                @if (showDetailsLink)
+                {
+                    <div class="text-dark-grey">
+                        <a href="weather/@Model.CityUniqueCode">Details</a>
+                    </div>
+                }
+            </td>
+            <td class="padding-left-45 border-left w-50">
+                <span>@Model.TemperatureFahrenheit</span>
+                <sup class="text-dark-grey">&deg;F</sup>
+            </td>
+        </tr>
+    </table>
+</div>
+
