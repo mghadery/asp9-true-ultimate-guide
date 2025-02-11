@@ -1,0 +1,45 @@
+﻿@using Section08.Practice.Models;
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var person1 = new Person() { Name = "David", DateOfBirth = DateTime.Parse("2000-01-01"), Title = "Mr" };
+    var person2 = new Person() { Name = "David", DateOfBirth = DateTime.Parse("2000-01-01"), Title = "Mr" };
+    var persons = new List<Person> { person1, person2 };
+}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>First MVC</title>
+    <meta charset="utf-8" />
+</head>
+<body>
+    @functions{
+        public int MyProperty { get; set; }
+    }
+
+    @foreach (var person in persons)
+    {
+        <text>Hello</text>   int zz= 2;
+        @:Good bye        int z = 2;
+        <div>
+            @{
+                var gender = person.Title switch { "Mr" => "Male", _ => "Female" };
+                string alertMessage = $"<script>alert('you are {gender}')</script>";
+}
+            @zz
+            
+            <p>@gender</p>
+            @alertMessage
+            @* @Html.Raw(alertMessage) *@
+
+            @if (person.DateOfBirth is not null)
+            {
+                <p>@person.DateOfBirth</p>
+            }
+        </div>
+    }
+</body>
+</html>

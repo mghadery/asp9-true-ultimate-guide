@@ -1,0 +1,36 @@
+﻿@model List<CityWeather>
+@inject IWebHostEnvironment webHostEnvironment
+@inject IConfiguration configuration
+@inject IOptions<ApiClientInfo> options
+
+@{
+    string title = "Weather List";
+    ViewBag.Title = title;
+
+    var apiSection = configuration.GetSection("ClientInfo");
+
+    //ApiClientInfo clientInfo = apiSection.Get<ApiClientInfo>();
+
+    ApiClientInfo clientInfo = options.Value;
+
+    var clientId = clientInfo.ClientId;
+    var clientSecret = clientInfo.ClientSecret;
+
+    // var clientId = apiSection["ClientId"];
+    // var clientSecret = apiSection["ClientSecret"];
+
+    //var clientId = configuration.GetValue<string>("ClientInfo:ClientId");
+    //var clientSecret = configuration.GetValue<string>("ClientInfo:ClientSecret");
+}
+<h2>Environment: @webHostEnvironment.EnvironmentName</h2>
+<h3>@ViewBag.xvaluE</h3>
+
+<h3>@clientId</h3>
+<h3>@clientSecret</h3>
+ 
+ <div class="flex">
+    @foreach (CityWeather cityWeather in Model)
+    {
+        <vc:city-weather city-weather-info="cityWeather" show-date=false show-details-link=true></vc:city-weather>
+    }
+</div>
