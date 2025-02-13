@@ -11,7 +11,10 @@ public record AddPersonRequest
 {
     [Required(ErrorMessage = "Name is blank")]
     public string? PersonName { get; init; }
+    [Required(ErrorMessage = "Email is blank")]
+    [EmailAddress(ErrorMessage = "Invalid Email")]
     public string? Email { get; init; }
+    [Required(ErrorMessage = "DateOfBirth is blank")]
     public DateTime DateOfBirth { get; init; }
     public GenderOptions GenderOptions { get; init; }
     public string? Address { get; init; }

@@ -14,8 +14,8 @@ public class PersonsServiceTest
 
     public PersonsServiceTest(ITestOutputHelper testOutputHelper)
     {
-        _countriesService = new CountriesService();
-        _personsService = new PersonsService(_countriesService);
+        _countriesService = new CountriesService(false);
+        _personsService = new PersonsService(_countriesService, false);
         _testOutputHelper = testOutputHelper;
     }
 

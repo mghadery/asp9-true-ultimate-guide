@@ -13,7 +13,7 @@ public class CountriesServiceTest
 
     public CountriesServiceTest(ITestOutputHelper testOutputHelper)
     {
-        _countriesService = new CountriesService();
+        _countriesService = new CountriesService(false);
         _testOutputHelper = testOutputHelper;
     }
 
