@@ -1,0 +1,67 @@
+﻿@model StockTrade
+@{
+    ViewBag.Title = "Stocks";
+}
+
+
+<input type="hidden" id="token" name="token" value="@ViewBag.Token" />
+<input type="hidden" id="stockSymbol" name="stockSymbol" value="@Model.StockSymbol" />
+
+<h2><i class="fa-solid fa-money-bill-trend-up"></i>Stocks</h2>
+
+<div class="flex">
+
+    <div class="margin-top box">
+        <div class="stock-title">
+            <span>
+                @Model.StockName
+            </span>
+            <span>
+                (@Model.StockSymbol)
+            </span>
+        </div>
+        <div class="stock-price">
+            <span class="text-grey">$</span><span id="price">@Model.Price</span>
+        </div>
+    </div>
+
+    <div class="flex-direction-vertical">
+        <h3 class="text-grey">New order</h3>
+        <label for="Quantity" class="form-label">Quantity</label>
+        <input type="number" class="form-input" id="Quantity" />
+        <div class="flex mt">
+            <form action="@Url.Action("SellOrder", "trade")" method="post" id="sellform">
+                <input type="hidden" name="StockSymbol" value="@Model.StockSymbol" />
+                <input type="hidden" name="StockName" value="@Model.StockName" />
+                <input type="hidden" name="DateAndTimeOfOrder" />
+                <input type="hidden" name="Quantity" />
+                <input type="hidden" name="Price" />
+                <button onclick="return sellAction()" type="submit" class="button button-red-back">Sell</button>
+            </form>
+            <form action="@Url.Action("BuyOrder", "trade")" method="post" id="buyform">
+                <input type="hidden" name="StockSymbol" value="@Model.StockSymbol" />
+                <input type="hidden" name="StockName" value="@Model.StockName" />
+                <input type="hidden" name="DateAndTimeOfOrder" />
+                <input type="hidden" name="Quantity" />
+                <input type="hidden" name="Price" />
+                <button onclick="return buyAction()" type="submit" class="button button-green-back ml">Buy</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/stock.js"></script>
+<script>
+    function sellAction() {
+        document.getElementById("sellform").querySelector('input[name="Quantity"]').value = document.getElementById("Quantity").value;
+        document.getElementById("sellform").querySelector('input[name="Price"]').value = document.getElementById("price").innerHTML;
+        return true;
+    }
+
+    function buyAction() {
+        document.getElementById("buyform").querySelector('input[name="Quantity"]').value = document.getElementById("Quantity").value;
+        document.getElementById("buyform").querySelector('input[name="Price"]').value = document.getElementById("price").innerHTML;
+        return true;
+    }
+
+</script>
