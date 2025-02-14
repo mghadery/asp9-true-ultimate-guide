@@ -33,6 +33,7 @@ public class TradeController(
             Price = Convert.ToDouble(stockQuote?["c"].ToString()),
         };
         ViewBag.Token = configuration["token"]?.ToString();
+        ViewBag.DefaultOrderQuantity = options.Value.DefaultOrderQuantity;
         return View(stockTrade);
     }
 

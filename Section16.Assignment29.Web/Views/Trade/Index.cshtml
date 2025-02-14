@@ -28,7 +28,7 @@
     <div class="flex-direction-vertical">
         <h3 class="text-grey">New order</h3>
         <label for="Quantity" class="form-label">Quantity</label>
-        <input type="number" class="form-input" id="Quantity" />
+        <input type="number" class="form-input" id="Quantity" value="@ViewBag.DefaultOrderQuantity" required placeholder="Quantity" autofocus/>
         <div class="flex mt">
             <form action="@Url.Action("SellOrder", "trade")" method="post" id="sellform">
                 <input type="hidden" name="StockSymbol" value="@Model.StockSymbol" />
