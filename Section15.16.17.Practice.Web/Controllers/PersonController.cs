@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Section15.Practice.ServiceContracts.DTOs;
 using Section15.Practice.ServiceContracts.Interfaces;
 
-namespace Section15_16.Practice.Web.Controllers;
+namespace Section15_16_17.Practice.Web.Controllers;
 
 public class PersonController(IPersonsService personsService, ICountriesService countriesService) : Controller
 {
@@ -52,5 +53,35 @@ public class PersonController(IPersonsService personsService, ICountriesService 
 
         return RedirectToAction("index", "person");
     }
+
+    [Route("/persons/edit/{personId}")]
+    [HttpGet]
+    public IActionResult Edit(Guid personId)
+    {
+        ViewBag.Countries = countriesService.GetCountryList()
+            .Select(x => new SelectListItem() { Text = x.CountryName, Value = x.CountryId.ToString() });
+
+        var pr = (UpdatePersonRequest)personsService.GetPersonById(personId);
+
+        return View(pr);
+
+    }
+
+    [Route("/persons/edit")]
+    [HttpPost]
+    public IActionResult Edit(UpdatePersonRequest updatePersonRequest)
+    {
+        ViewBag.Countries = countriesService.GetCountryList()
+            .Select(x => new SelectListItem() { Text = x.CountryName, Value = x.CountryId.ToString() });
+
+        if (!ModelState.IsValid)
+            return View(updatePersonRequest);
+
+        personsService.UpdatePerson(updatePersonRequest);
+
+        return RedirectToAction("index");
+
+    }
+
 }
 

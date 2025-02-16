@@ -14,7 +14,9 @@ public record UpdatePersonRequest
 
     [Required(ErrorMessage = "Name is blank")]
     public string? PersonName { get; set; }
+    [EmailAddress(ErrorMessage = "Invalid Email")]
     public string? Email { get; init; }
+    [DataType(DataType.Date)]
     public DateTime DateOfBirth { get; init; }
     public GenderOptions GenderOptions { get; init; }
     public string? Address { get; init; }

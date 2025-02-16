@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Section15_16.Practice.Web</RootNamespace>
+    <RootNamespace>Section15_16_17.Practice.Web</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

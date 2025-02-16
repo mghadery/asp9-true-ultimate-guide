@@ -130,6 +130,9 @@
                     <td>@person.Country</td>
                     <td>@person.Address</td>
                     <td>@person.ReceiveNewsLetters</td>
+                    <td>
+                        <a asp-action="Edit" asp-controller="person" asp-route-personId="@person.PersonId">Edit</a>
+                    </td>
                 </tr>
             }
         </tbody>
