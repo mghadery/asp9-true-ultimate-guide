@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stocks.Tests", "Stocks.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stocks.Web", "Stocks.Web\Stocks.Web.csproj", "{5CB20404-4E01-4C6E-8339-968BE1A6F6BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks.Persistent", "Stocks.Persistent\Stocks.Persistent.csproj", "{9EA9D1AA-3E8D-47EF-931C-245FDD921CA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{5CB20404-4E01-4C6E-8339-968BE1A6F6BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CB20404-4E01-4C6E-8339-968BE1A6F6BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CB20404-4E01-4C6E-8339-968BE1A6F6BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EA9D1AA-3E8D-47EF-931C-245FDD921CA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EA9D1AA-3E8D-47EF-931C-245FDD921CA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EA9D1AA-3E8D-47EF-931C-245FDD921CA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EA9D1AA-3E8D-47EF-931C-245FDD921CA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

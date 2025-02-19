@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Stocks.Entities;
+using Stocks.Persistent;
 using Stocks.ServiceContracts.DTOs;
 using Stocks.ServiceContracts.Interfaces;
 using Stocks.Services;
@@ -12,7 +15,9 @@ public class StocksServiceTests
 
     public StocksServiceTests(ITestOutputHelper testOutputHelper)
     {
-        _stocksService = new StocksService();
+        IStocksRepo<BuyOrder> buyRepo = new StocksRepo<BuyOrder>(new StocksDbContext(new DbContextOptionsBuilder().Options));
+        IStocksRepo<SellOrder> sellRepo = new StocksRepo<SellOrder>(new StocksDbContext(new DbContextOptionsBuilder().Options));
+        _stocksService = new StocksService(buyRepo, sellRepo);
         _testOutputHelper = testOutputHelper;
     }
     #region CreateBuyOrder

@@ -39,7 +39,7 @@ public class TradeController(
 
     [Route("[Action]")]
     [HttpPost]
-    public IActionResult BuyOrder(BuyOrderRequest buyOrderRequest)
+    public async Task<IActionResult> BuyOrder(BuyOrderRequest buyOrderRequest)
     {
         ModelState.Remove("DateAndTimeOfOrder");
         if (!ModelState.IsValid)
@@ -48,13 +48,13 @@ public class TradeController(
         }
 
         buyOrderRequest.DateAndTimeOfOrder = DateTime.Now;
-        stocksService.CreateBuyOrder(buyOrderRequest);
+        await stocksService.CreateBuyOrder(buyOrderRequest);
         return RedirectToAction("orders");
     }
 
     [Route("[Action]")]
     [HttpPost]
-    public IActionResult SellOrder(SellOrderRequest sellOrderRequest)
+    public async Task<IActionResult> SellOrder(SellOrderRequest sellOrderRequest)
     {
         ModelState.Remove("DateAndTimeOfOrder");
         if (!ModelState.IsValid)
@@ -63,7 +63,7 @@ public class TradeController(
         }
 
         sellOrderRequest.DateAndTimeOfOrder = DateTime.Now;
-        stocksService.CreateSellOrder(sellOrderRequest);
+        await stocksService.CreateSellOrder(sellOrderRequest);
         return RedirectToAction("orders");
     }
 

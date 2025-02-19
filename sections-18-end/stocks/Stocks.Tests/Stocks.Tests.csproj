@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Stocks.Persistent\Stocks.Persistent.csproj" />
     <ProjectReference Include="..\Stocks.ServiceContracts\Stocks.ServiceContracts.csproj" />
     <ProjectReference Include="..\Stocks.Services\Stocks.Services.csproj" />
   </ItemGroup>

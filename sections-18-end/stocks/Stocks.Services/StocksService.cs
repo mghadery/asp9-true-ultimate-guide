@@ -5,17 +5,15 @@ using Stocks.ServiceContracts.Interfaces;
 
 namespace Stocks.Services;
 
-public class StocksService : IStocksService
+public class StocksService(IStocksRepo<BuyOrder> buyRepo, IStocksRepo<SellOrder> sellRepo) : IStocksService
 {
-    private readonly List<BuyOrder> _buyOrders = new();
-    private readonly List<SellOrder> _sellOrders = new();
     public async Task<BuyOrderResponse> CreateBuyOrder(BuyOrderRequest? buyOrderRequest)
     {
         ModelValidator.IsValid(buyOrderRequest);
 
         BuyOrder buyOrder = (BuyOrder)buyOrderRequest;
         buyOrder.BuyOrderID = Guid.NewGuid();
-        _buyOrders.Add(buyOrder);
+        var r = await buyRepo.Add(buyOrder);
 
         BuyOrderResponse buyOrderResponse = (BuyOrderResponse)buyOrder;
         return buyOrderResponse;
@@ -27,7 +25,7 @@ public class StocksService : IStocksService
 
         SellOrder sellOrder = (SellOrder)sellOrderRequest;
         sellOrder.SellOrderID = Guid.NewGuid();
-        _sellOrders.Add(sellOrder);
+        var r = await sellRepo.Add(sellOrder);
 
         SellOrderResponse sellOrderResponse = (SellOrderResponse)sellOrder;
         return sellOrderResponse;
@@ -35,13 +33,17 @@ public class StocksService : IStocksService
 
     public async Task<List<BuyOrderResponse>> GetBuyOrders()
     {
-        var r = _buyOrders.Select(x=> (BuyOrderResponse)(x)).ToList();
+        var r = (await buyRepo.GetAll()).Select(x=> (BuyOrderResponse)(x))
+            .OrderByDescending(x=> x.DateAndTimeOfOrder)
+            .ToList();
         return r;
     }
 
     public async Task<List<SellOrderResponse>> GetSellOrders()
     {
-        var r = _sellOrders.Select(x => (SellOrderResponse)(x)).ToList();
+        var r = (await sellRepo.GetAll()).Select(x => (SellOrderResponse)(x))
+            .OrderByDescending(x => x.DateAndTimeOfOrder)
+            .ToList();
         return r;
     }
 }
