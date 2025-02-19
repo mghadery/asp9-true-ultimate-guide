@@ -4,7 +4,7 @@
 }
 <link rel="stylesheet" href="@link" />
 
-@model List<Order>
+@model List<IOrderResponse>
 
 <h3>Orders</h3>
 <table class="table">
@@ -18,11 +18,11 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Order order in Model)
+        @foreach (IOrderResponse order in Model)
         {
             <tr>
-                <td>@order.DateAndTimeOfOrder</td>
-                <td>@order.StockInfo</td>
+                <td>@order.DateAndTimeOfOrder.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                <td>@($"{order.StockName}({order.StockSymbol})")</td>
                 <td>@order.OrderType</td>
                 <td>@order.Quantity</td>
                 <td>@order.Price</td>

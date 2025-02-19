@@ -83,8 +83,8 @@ public class TradeController(
     [HttpGet]
     public async Task<IActionResult> OrdersAsPdf()
     {
-        var buyOrders = (await stocksService.GetBuyOrders()).Select(x => (Order)x).ToList();
-        var sellOrders = (await stocksService.GetSellOrders()).Select(x => (Order)x).ToList();
+        var buyOrders = (await stocksService.GetBuyOrders()).Select(x => (IOrderResponse)x).ToList();
+        var sellOrders = (await stocksService.GetSellOrders()).Select(x => (IOrderResponse)x).ToList();
         var orders = buyOrders.Union(sellOrders).OrderBy(x=>x.DateAndTimeOfOrder).ToList();
         return new ViewAsPdf("ordersAsPdf", orders, ViewData);
     }

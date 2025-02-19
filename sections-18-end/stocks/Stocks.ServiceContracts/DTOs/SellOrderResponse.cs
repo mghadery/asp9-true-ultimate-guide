@@ -1,8 +1,9 @@
 ﻿using Stocks.Entities;
+using Stocks.ServiceContracts.Interfaces;
 
 namespace Stocks.ServiceContracts.DTOs;
 
-public record SellOrderResponse
+public record SellOrderResponse : IOrderResponse
 {
     public Guid SellOrderID { get; set; }
     public string? StockSymbol { get; set; }
@@ -11,6 +12,7 @@ public record SellOrderResponse
     public uint Quantity { get; set; }
     public double Price { get; set; }
     public double TradeAmount { get; set; }
+    public string OrderType => "SELL";
 
     public static explicit operator SellOrderResponse(SellOrder sellOrder)
     {
