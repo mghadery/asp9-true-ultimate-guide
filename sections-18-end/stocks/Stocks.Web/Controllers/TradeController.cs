@@ -4,6 +4,7 @@ using Stocks.Models;
 using Stocks.ServiceContracts.DTOs;
 using Stocks.ServiceContracts.Interfaces;
 using Stocks.Web.Models;
+using Rotativa.AspNetCore;
 
 namespace Stocks.Controllers;
 
@@ -76,5 +77,15 @@ public class TradeController(
         var sellOrders = await stocksService.GetSellOrders();
         Orders orders = new Orders() { BuyOrders = buyOrders, SellOrders = sellOrders };
         return View(orders);
+    }
+
+    [Route("[Action]")]
+    [HttpGet]
+    public async Task<IActionResult> OrdersAsPdf()
+    {
+        var buyOrders = (await stocksService.GetBuyOrders()).Select(x => (Order)x).ToList();
+        var sellOrders = (await stocksService.GetSellOrders()).Select(x => (Order)x).ToList();
+        var orders = buyOrders.Union(sellOrders).OrderBy(x=>x.DateAndTimeOfOrder).ToList();
+        return new ViewAsPdf("ordersAsPdf", orders, ViewData);
     }
 }

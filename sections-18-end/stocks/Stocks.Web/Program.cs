@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Rotativa.AspNetCore;
 using Stocks.Models;
 using Stocks.Persistent;
 using Stocks.ServiceContracts.Interfaces;
@@ -15,6 +16,8 @@ builder.Services.AddDbContext<StocksDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped(typeof(IStocksRepo<>), typeof(StocksRepo<>));
 var app = builder.Build();
+
+RotativaConfiguration.Setup(app.Environment.ContentRootPath, "wwwroot");
 
 app.UseStaticFiles();
 app.UseRouting();
