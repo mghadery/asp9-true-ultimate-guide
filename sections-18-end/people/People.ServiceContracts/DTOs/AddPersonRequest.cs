@@ -26,7 +26,7 @@ public record AddPersonRequest
         return new Person()
         {
             Address = addPersonRequest.Address,
-            CountryId = addPersonRequest.CountryId,
+            CountryId = addPersonRequest.CountryId.Value,
             DateOfBirth = addPersonRequest.DateOfBirth,
             Gender = addPersonRequest.GenderOptions.ToString(),
             Email = addPersonRequest.Email,

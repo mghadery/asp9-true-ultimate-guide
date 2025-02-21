@@ -25,6 +25,7 @@ public record PersonResponse
             PersonId = person.PersonId,
             Address = person.Address,
             CountryId = person.CountryId,
+            Country = person.Country.CountryName,
             DateOfBirth = person.DateOfBirth,
             Gender = person.Gender,
             Email = person.Email,

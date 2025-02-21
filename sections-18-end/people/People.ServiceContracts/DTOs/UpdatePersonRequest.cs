@@ -29,7 +29,7 @@ public record UpdatePersonRequest
         {
             PersonId = updatePersonRequest.PersonId,
             Address = updatePersonRequest.Address,
-            CountryId = updatePersonRequest.CountryId,
+            CountryId = updatePersonRequest.CountryId.Value,
             DateOfBirth = updatePersonRequest.DateOfBirth,
             Gender = updatePersonRequest.GenderOptions.ToString(),
             Email = updatePersonRequest.Email,

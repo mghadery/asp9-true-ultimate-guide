@@ -6,6 +6,8 @@
     public class Country
     {
         public Guid CountryId { get; set; }
-        public string? CountryName { get; set; }
+        public string CountryName { get; set; } = string.Empty;
+
+        public virtual ICollection<Person> Persons { get; set; } = new List<Person>();
     }
 }

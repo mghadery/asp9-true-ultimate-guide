@@ -10,9 +10,9 @@ public class PersonController(IPersonsService personsService, ICountriesService 
     [Route("/")]
     [Route("/persons/index")]
     [HttpGet]
-    public IActionResult Index(string searchBy, string searchString, string sortBy, bool ascending)
+    public async Task<IActionResult> Index(string searchBy, string searchString, string sortBy, bool ascending)
     {
-        var persons = personsService.GetFilteredPersons(searchBy, searchString);
+        var persons = await personsService.GetFilteredPersons(searchBy, searchString);
         persons = personsService.GetSortedPersons(persons, sortBy, ascending);
 
         ViewBag.SearchFields = new Dictionary<string, string>()
@@ -29,15 +29,15 @@ public class PersonController(IPersonsService personsService, ICountriesService 
 
     [Route("/persons/create")]
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        ViewBag.Countries = countriesService.GetCountryList();
+        ViewBag.Countries = await countriesService.GetCountryList();
         return View();
     }
 
     [Route("/persons/create")]
     [HttpPost]
-    public IActionResult Create(AddPersonRequest addPersonRequest)
+    public async Task<IActionResult> Create(AddPersonRequest addPersonRequest)
     {
         if (!ModelState.IsValid)
         {
@@ -45,23 +45,23 @@ public class PersonController(IPersonsService personsService, ICountriesService 
                 .Select(x => x.ErrorMessage)
                 .ToList();
 
-            ViewBag.Countries = countriesService.GetCountryList();
+            ViewBag.Countries = await countriesService.GetCountryList();
             return View();
         }
 
-        personsService.AddPerson(addPersonRequest);
+        await personsService.AddPerson(addPersonRequest);
 
         return RedirectToAction("index", "person");
     }
 
     [Route("/persons/edit/{personId}")]
     [HttpGet]
-    public IActionResult Edit(Guid personId)
+    public async Task<IActionResult> Edit(Guid personId)
     {
-        ViewBag.Countries = countriesService.GetCountryList()
+        ViewBag.Countries = (await countriesService.GetCountryList())
             .Select(x => new SelectListItem() { Text = x.CountryName, Value = x.CountryId.ToString() });
 
-        var pr = (UpdatePersonRequest)personsService.GetPersonById(personId);
+        var pr = (UpdatePersonRequest)(await personsService.GetPersonById(personId));
 
         return View(pr);
 
@@ -69,15 +69,15 @@ public class PersonController(IPersonsService personsService, ICountriesService 
 
     [Route("/persons/edit")]
     [HttpPost]
-    public IActionResult Edit(UpdatePersonRequest updatePersonRequest)
+    public async Task<IActionResult> Edit(UpdatePersonRequest updatePersonRequest)
     {
-        ViewBag.Countries = countriesService.GetCountryList()
+        ViewBag.Countries = (await countriesService.GetCountryList())
             .Select(x => new SelectListItem() { Text = x.CountryName, Value = x.CountryId.ToString() });
 
         if (!ModelState.IsValid)
             return View(updatePersonRequest);
 
-        personsService.UpdatePerson(updatePersonRequest);
+        await personsService.UpdatePerson(updatePersonRequest);
 
         return RedirectToAction("index");
 

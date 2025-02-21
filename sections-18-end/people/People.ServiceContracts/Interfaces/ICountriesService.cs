@@ -10,8 +10,8 @@ namespace People.ServiceContracts.Interfaces
         /// </summary>
         /// <param name="request">request containing added country name</param>
         /// <returns>created or modified country info</returns>
-        CountryResponse AddCountry(AddCountryRequest request);
-        List<CountryResponse> GetCountryList();
-        CountryResponse? GetCountry(Guid? id);
+        Task<CountryResponse> AddCountry(AddCountryRequest request);
+        Task<List<CountryResponse>> GetCountryList();
+        Task<CountryResponse?> GetCountry(Guid? id);
     }
 }
