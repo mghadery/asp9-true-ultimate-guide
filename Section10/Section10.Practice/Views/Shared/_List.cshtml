@@ -1,0 +1,14 @@
+﻿
+<h2>@ViewBag.ListTitle</h2>
+<div class="list-container">
+    <ul class="list">
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+    </ul>
+</div>
+
+@{
+    ViewBag.ListTitle = "This ViewData is a copy of the original one!";
+}
+<h3>Changed title: @ViewBag.ListTitle</h3>

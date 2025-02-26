@@ -1,0 +1,33 @@
+﻿@{
+    string title = "Home";
+    ViewBag.Title = title;
+    ViewBag.ListTitle = "Original list title";
+}
+
+@* <div class="box">
+    @await Html.PartialAsync("_list")
+    <div>@ViewBag.ListTitle</div>
+</div>
+ *@
+
+ <button type="button" id="load-btn" class="button button-green-back">Load</button>
+ <div class="box" id="pcont"></div>
+
+@*  <script>
+    document.querySelector("#load-btn")
+        .addEventListener("click", async function () {
+            var resp = await fetch("PartialList/testList");
+            var body = await resp.text();
+            document.querySelector("#pcont").innerHTML = body;
+        });
+</script>
+ *@
+  @section script_section{
+    document.querySelector("#load-btn")
+        .addEventListener("click", async function () {
+            var resp = await fetch("PartialList/testList");
+            var body = await resp.text();
+            document.querySelector("#pcont").innerHTML = body;
+        });
+}
+ 

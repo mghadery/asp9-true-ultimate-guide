@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "Social Media Links";
+    SocialMediaLinksOptions socialMediaLinksOptions = (SocialMediaLinksOptions)ViewBag.Links;
+}
+
+<h2>Social Media Links</h2>
+
+<div class="flex margin-top">
+    <div>
+        <a href="@socialMediaLinksOptions.Facebook">Facebook</a>
+    </div>
+    <environment exclude="Development">
+        <div>
+            <a href="@socialMediaLinksOptions.Instagram">Instagram</a>
+        </div>
+    </environment>
+    <div>
+        <a href="@socialMediaLinksOptions.Twitter">Twitter</a>
+    </div>
+    <div>
+        <a href="@socialMediaLinksOptions.Youtube">Youtube</a>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+﻿@model List<CityWeather>
+@{
+    string getTempCssColor(int temp)
+    {
+        string bkg = "blue-back";
+        if (temp > 74)
+            bkg = "orange-back";
+        else if (temp >= 44)
+            bkg = "green-back";
+        return bkg;
+    }
+
+    string title = "Weather List";
+    ViewBag.Title = title;
+}
+<div class="flex">
+    @foreach (var cityWeather in Model)
+    {
+        var time = cityWeather.DateAndTime.ToString("hh:mm tt");
+
+        <div class="box w-30 margin-auto @getTempCssColor(cityWeather.TemperatureFahrenheit)">
+            <table class="w-100">
+                <tr>
+                    <td class="padding-left-45 w-50">
+                        <div>
+                            @cityWeather.CityName
+                        </div>
+                        <div class="text-dark-grey">
+                            @time
+                        </div>
+                        <div class="text-dark-grey">
+                            <a href="weather/@cityWeather.CityUniqueCode">Details</a>
+                        </div>
+                    </td>
+                    <td class="padding-left-45 border-left w-50">
+                        <span>@cityWeather.TemperatureFahrenheit</span>
+                        <sup class="text-dark-grey">&deg;F</sup>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+</div>

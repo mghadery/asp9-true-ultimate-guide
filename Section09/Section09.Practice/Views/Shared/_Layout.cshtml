@@ -1,0 +1,32 @@
+﻿@{
+    Layout = "_MasterLayout";
+}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8" />
+    <link href="~/StyleSheet.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="navbar-brand">
+                ASP.NET Core Section 9
+            </div>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/Contact">Contact</a></li>
+                <li><a href="/About">About</a></li>
+                <li><a href="/products">All products</a></li>
+                <li><a href="/search-products">Search products</a></li>
+                <li><a href="/order-product">Order product</a></li>
+            </ul>
+        </div>
+        <div>
+            @RenderBody()
+        </div>
+    </div>
+</body>
+</html>

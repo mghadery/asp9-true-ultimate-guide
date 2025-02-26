@@ -1,0 +1,51 @@
+﻿@model Section10.Assignment18.Models.CityWeather
+
+@{
+    string getTempCssColor(int temp)
+    {
+        string bkg = "blue-back";
+        if (temp > 74)
+            bkg = "orange-back";
+        else if (temp >= 44)
+            bkg = "green-back";
+        return bkg;
+    }
+
+    var time = Model.DateAndTime.ToString("hh:mm tt");
+    bool showDate = ViewBag.ShowDate;
+    bool showDetailsLink = ViewBag.ShowDetailsLink;
+}
+
+<div class="box w-30 margin-auto @getTempCssColor(Model.TemperatureFahrenheit)">
+    <table class="w-100">
+        <tr>
+            <td class="padding-left-45 w-50">
+                <div>
+                    @Model.CityName
+                </div>
+                @if (showDate)
+                {
+                    var date = DateTime.Today.ToString("dd MMM yyyy");
+
+                    <div class="text-dark-grey">
+                        @date
+                    </div>
+                }
+                <div class="text-dark-grey">
+                    @time
+                </div>
+                @if (showDetailsLink)
+                {
+                    <div class="text-dark-grey">
+                        <a href="weather/@Model.CityUniqueCode">Details</a>
+                    </div>
+                }
+            </td>
+            <td class="padding-left-45 border-left w-50">
+                <span>@Model.TemperatureFahrenheit</span>
+                <sup class="text-dark-grey">&deg;F</sup>
+            </td>
+        </tr>
+    </table>
+</div>
+

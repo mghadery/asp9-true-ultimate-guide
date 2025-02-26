@@ -1,0 +1,17 @@
+﻿@model CityWeather
+@{
+    string title = $"{@Model.CityName} Weather";
+    ViewBag.Title = title;
+
+    ViewDataDictionary viewData = new(ViewData);
+    viewData.Clear();
+    viewData["ShowDate"] = true;
+    viewData["ShowDetailsLink"] = false;
+}
+
+<vc:city-weather city-weather-info="Model" show-date=true show-details-link=false></vc:city-weather>
+
+<div class="w-25 margin-auto text-center">
+    <a href="/">Back to list</a>
+</div>
+

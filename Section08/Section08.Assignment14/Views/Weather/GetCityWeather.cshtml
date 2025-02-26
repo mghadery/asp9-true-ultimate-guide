@@ -1,0 +1,40 @@
+﻿@model CityWeather
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Weather</title>
+    <meta charset="utf-8" />
+    <link href="~/StyleSheet.css" rel="stylesheet">
+</head>
+<body>
+    @{
+        var date = DateTime.Today.ToString("dd MMM yyyy");
+        var time = @Model.DateAndTime.ToString("hh:mm tt");
+    }
+    <h1>Weather</h1>
+    <div class="box w-25 margin-auto">
+        <table class="w-100">
+            <tr>
+                <td class="padding-left-45 w-50">
+                    <div>
+                        @Model.CityName
+                    </div>
+                    <div class="text-dark-grey">
+                        @date
+                    </div>
+                    <div class="text-dark-grey">
+                        <span>@time</span>
+                    </div>
+                </td>
+                <td class="padding-left-45 border-left w-50">
+                    <span>@Model.TemperatureFahrenheit</span>
+                    <sup class="text-dark-grey">&deg;F</sup>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="w-25 margin-auto text-center">
+        <a href="/">Back to list</a>
+    </div>
+</body>
+</html>
