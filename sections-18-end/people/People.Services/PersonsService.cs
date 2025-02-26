@@ -12,7 +12,7 @@ namespace People.Services;
 public class PersonsService(AppDbContext dbContext) : IPersonsService
 {
     //private readonly ICountriesService _countriesService;
-    private readonly List<Person> _persons = new List<Person>();
+    //private readonly List<Person> _persons = new List<Person>();
 
     //private void setCountryInResponse(PersonResponse personResponse)
     //{
@@ -145,11 +145,11 @@ public class PersonsService(AppDbContext dbContext) : IPersonsService
     {
         if (personId is null) throw new ArgumentNullException(nameof(personId));
 
-        var r = _persons.FirstOrDefault(x => x.PersonId == personId);
+        var r = dbContext.Persons.FirstOrDefault(x => x.PersonId == personId);
 
         if (r is null) return false;
 
-        _persons.Remove(r);
+        dbContext.Persons.Remove(r);
 
         await dbContext.SaveChangesAsync();
         return true;

@@ -1,7 +1,12 @@
-﻿using People.ServiceContracts.DTOs;
+﻿using EntityFrameworkCore.Testing.Moq;
+using Microsoft.EntityFrameworkCore;
+using People.Entities;
+using People.ServiceContracts.DTOs;
+using People.ServiceContracts.Enums;
 using People.ServiceContracts.Interfaces;
 using People.Services;
 using Xunit.Abstractions;
+using FluentAssertions;
 
 namespace People.Tests;
 
@@ -11,12 +16,23 @@ public class PersonsServiceTest
 
     private readonly IPersonsService _personsService;
     private readonly ITestOutputHelper _testOutputHelper;
+    private readonly Bogus.Faker<AddPersonRequest> _personReqFaker;
+    private readonly Bogus.Faker<AddCountryRequest> _countryReqFaker;
 
     public PersonsServiceTest(ITestOutputHelper testOutputHelper)
     {
-        _countriesService = new CountriesService(new Entities.AppDbContext());
-        _personsService = new PersonsService(new Entities.AppDbContext());
+        AppDbContext appDbContext = Create.MockedDbContextFor<AppDbContext>();
+        _countriesService = new CountriesService(appDbContext);
+        _personsService = new PersonsService(appDbContext);
         _testOutputHelper = testOutputHelper;
+        _personReqFaker = new Bogus.Faker<AddPersonRequest>()
+            .RuleFor(p => p.Address, f => f.Address.FullAddress())
+            .RuleFor(p => p.Email, f => f.Internet.Email())
+            .RuleFor(p => p.GenderOptions, f => f.PickRandom<GenderOptions>())
+            .RuleFor(p => p.PersonName, f => f.Name.FullName());
+
+        _countryReqFaker = new Bogus.Faker<AddCountryRequest>()
+            .RuleFor(c => c.CountryName, f => f.Address.County());
     }
 
     #region AddPerson
@@ -27,9 +43,12 @@ public class PersonsServiceTest
         AddPersonRequest? addPersonRequest = null;
 
         //Assert
-        await Assert.ThrowsAsync<ArgumentNullException>(
-            //Act
-            async () => await _personsService.AddPerson(addPersonRequest));
+        //await Assert.ThrowsAsync<ArgumentNullException>(
+        //    //Act
+        //    async () => await _personsService.AddPerson(addPersonRequest));
+        Func<Task> action = async () => await _personsService.AddPerson(addPersonRequest);
+
+        await action.Should().ThrowAsync<ArgumentNullException>();
     }
 
     [Fact]
@@ -48,24 +67,34 @@ public class PersonsServiceTest
     public async Task AddPerson_ValidPerson()
     {
         //Arrange
-        AddPersonRequest? addPersonRequest = new AddPersonRequest()
-        {
-            PersonName = "Ali",
-            Address = "Street 1",
-            DateOfBirth = DateTime.Parse("2000-01-01"),
-            Email = "ali@gmail.com",
-            GenderOptions = ServiceContracts.Enums.GenderOptions.Male,
-            ReceiveNewsLetters = true,
-            CountryId = Guid.NewGuid()
-        };
+        //AddCountryRequest? addCountryRequest = new() { CountryName = "Iran" };
+        AddCountryRequest? addCountryRequest = _countryReqFaker.Generate();
+        CountryResponse countryResponse = await _countriesService.AddCountry(addCountryRequest);
 
+        //AddPersonRequest? addPersonRequest = new AddPersonRequest()
+        //{
+        //    PersonName = "Ali",
+        //    Address = "Street 1",
+        //    DateOfBirth = DateTime.Parse("2000-01-01"),
+        //    Email = "ali@gmail.com",
+        //    GenderOptions = ServiceContracts.Enums.GenderOptions.Male,
+        //    ReceiveNewsLetters = true,
+        //    CountryId = countryResponse.CountryId
+        //};
+
+        //_personReqFaker.RuleFor(x => x.CountryId, countryResponse.CountryId);
+        AddPersonRequest? addPersonRequest = _personReqFaker.Generate();
+        addPersonRequest.CountryId = countryResponse.CountryId;
         //Act
         var actualResponse = await _personsService.AddPerson(addPersonRequest);
         var list = await _personsService.GetPersonList();
 
         //Assert
-        Assert.True(actualResponse.PersonId != Guid.Empty);
-        Assert.Contains(actualResponse, list);
+        //Assert.True(actualResponse.PersonId != Guid.Empty);
+        actualResponse.PersonId.Should().NotBe(Guid.Empty);
+
+        //Assert.Contains(actualResponse, list);
+        list.Should().Contain(actualResponse);
     }
     #endregion
 
@@ -74,6 +103,9 @@ public class PersonsServiceTest
     public async Task GetPersonList_Valid()
     {
         //Arrange
+        AddCountryRequest? addCountryRequest = new() { CountryName = "Iran" };
+        CountryResponse countryResponse = await _countriesService.AddCountry(addCountryRequest);
+
         AddPersonRequest addPersonRequest1 = new AddPersonRequest()
         {
             PersonName = "Ali",
@@ -82,7 +114,7 @@ public class PersonsServiceTest
             Email = "ali@gmail.com",
             GenderOptions = ServiceContracts.Enums.GenderOptions.Male,
             ReceiveNewsLetters = true,
-            CountryId = Guid.NewGuid()
+            CountryId = countryResponse.CountryId
         };
         //Arrange
         AddPersonRequest addPersonRequest2 = new AddPersonRequest()
@@ -93,7 +125,7 @@ public class PersonsServiceTest
             Email = "hasan@gmail.com",
             GenderOptions = ServiceContracts.Enums.GenderOptions.Male,
             ReceiveNewsLetters = true,
-            CountryId = Guid.NewGuid()
+            CountryId = countryResponse.CountryId
         };
         List<AddPersonRequest> addPersonRequests = new() { addPersonRequest1, addPersonRequest2 };
         List<PersonResponse> personResponses = new();
@@ -116,6 +148,9 @@ public class PersonsServiceTest
     public async Task GetPersonById_Valid()
     {
         //Arrange
+        AddCountryRequest? addCountryRequest = new() { CountryName = "Iran" };
+        CountryResponse countryResponse = await _countriesService.AddCountry(addCountryRequest);
+
         AddPersonRequest addPersonRequest = new AddPersonRequest()
         {
             PersonName = "Ali",
@@ -124,7 +159,7 @@ public class PersonsServiceTest
             Email = "ali@gmail.com",
             GenderOptions = ServiceContracts.Enums.GenderOptions.Male,
             ReceiveNewsLetters = true,
-            CountryId = Guid.NewGuid()
+            CountryId = countryResponse.CountryId
         };
         var expected = await _personsService.AddPerson(addPersonRequest);
 
@@ -142,6 +177,8 @@ public class PersonsServiceTest
     public async Task GetFilteredPersons_Empty()
     {
         //Arrange
+        AddCountryRequest? addCountryRequest = new() { CountryName = "Iran" };
+        CountryResponse countryResponse = await _countriesService.AddCountry(addCountryRequest);
         AddPersonRequest addPersonRequest1 = new AddPersonRequest()
         {
             PersonName = "Ali",
@@ -150,7 +187,7 @@ public class PersonsServiceTest
             Email = "ali@gmail.com",
             GenderOptions = ServiceContracts.Enums.GenderOptions.Male,
             ReceiveNewsLetters = true,
-            CountryId = Guid.NewGuid()
+            CountryId = countryResponse.CountryId
         };
         //Arrange
         AddPersonRequest addPersonRequest2 = new AddPersonRequest()
@@ -161,7 +198,7 @@ public class PersonsServiceTest
             Email = "hasan@gmail.com",
             GenderOptions = ServiceContracts.Enums.GenderOptions.Male,
             ReceiveNewsLetters = true,
-            CountryId = Guid.NewGuid()
+            CountryId = countryResponse.CountryId
         };
         List<AddPersonRequest> addPersonRequests = new() { addPersonRequest1, addPersonRequest2 };
         List<PersonResponse> personResponses = new();
@@ -182,6 +219,8 @@ public class PersonsServiceTest
     public async Task GetFilteredPersons_SearchName()
     {
         //Arrange
+        AddCountryRequest? addCountryRequest = new() { CountryName = "Iran" };
+        CountryResponse countryResponse = await _countriesService.AddCountry(addCountryRequest);
         AddPersonRequest addPersonRequest1 = new AddPersonRequest()
         {
             PersonName = "Ali",
@@ -190,7 +229,7 @@ public class PersonsServiceTest
             Email = "ali@gmail.com",
             GenderOptions = ServiceContracts.Enums.GenderOptions.Male,
             ReceiveNewsLetters = true,
-            CountryId = Guid.NewGuid()
+            CountryId = countryResponse.CountryId
         };
         AddPersonRequest addPersonRequest2 = new AddPersonRequest()
         {
@@ -200,7 +239,7 @@ public class PersonsServiceTest
             Email = "hosen@gmail.com",
             GenderOptions = ServiceContracts.Enums.GenderOptions.Male,
             ReceiveNewsLetters = true,
-            CountryId = Guid.NewGuid()
+            CountryId = countryResponse.CountryId
         };
         AddPersonRequest addPersonRequest3 = new AddPersonRequest()
         {
@@ -210,7 +249,7 @@ public class PersonsServiceTest
             Email = "hasanali@gmail.com",
             GenderOptions = ServiceContracts.Enums.GenderOptions.Male,
             ReceiveNewsLetters = true,
-            CountryId = Guid.NewGuid()
+            CountryId = countryResponse.CountryId
         };
         List<AddPersonRequest> addPersonRequests = new() { addPersonRequest1, addPersonRequest2, addPersonRequest3 };
         List<PersonResponse> personResponses = new();
@@ -233,10 +272,13 @@ public class PersonsServiceTest
             _testOutputHelper.WriteLine(item.ToString());
 
         //Assert
-        foreach (var item in expected)
-        {
-            Assert.Contains(item, actual);
-        }
+        //foreach (var item in expected)
+        //{
+        //    Assert.Contains(item, actual);
+        //}
+        actual.Should().BeEquivalentTo(expected);
+        actual.Should().OnlyContain(x => x.PersonName.Contains(searchString,
+            StringComparison.OrdinalIgnoreCase));
     }
     #endregion
 
@@ -245,6 +287,9 @@ public class PersonsServiceTest
     public async Task GetSortedPersons_Valid()
     {
         //Arrange
+        AddCountryRequest? addCountryRequest = new() { CountryName = "Iran" };
+        CountryResponse countryResponse = await _countriesService.AddCountry(addCountryRequest);
+
         AddPersonRequest addPersonRequest1 = new AddPersonRequest()
         {
             PersonName = "Hosein",
@@ -253,7 +298,7 @@ public class PersonsServiceTest
             Email = "hosen@gmail.com",
             GenderOptions = ServiceContracts.Enums.GenderOptions.Male,
             ReceiveNewsLetters = true,
-            CountryId = Guid.NewGuid()
+            CountryId = countryResponse.CountryId
         };
         AddPersonRequest addPersonRequest2 = new AddPersonRequest()
         {
@@ -263,7 +308,7 @@ public class PersonsServiceTest
             Email = "ali@gmail.com",
             GenderOptions = ServiceContracts.Enums.GenderOptions.Male,
             ReceiveNewsLetters = true,
-            CountryId = Guid.NewGuid()
+            CountryId = countryResponse.CountryId
         };
         AddPersonRequest addPersonRequest3 = new AddPersonRequest()
         {
@@ -273,7 +318,7 @@ public class PersonsServiceTest
             Email = "hasanali@gmail.com",
             GenderOptions = ServiceContracts.Enums.GenderOptions.Male,
             ReceiveNewsLetters = true,
-            CountryId = Guid.NewGuid()
+            CountryId = countryResponse.CountryId
         };
         List<AddPersonRequest> addPersonRequests = new() { addPersonRequest1, addPersonRequest2, addPersonRequest3 };
         List<PersonResponse> personResponses = new();
@@ -295,7 +340,9 @@ public class PersonsServiceTest
             _testOutputHelper.WriteLine(item.ToString());
 
         //Assert
-        Assert.True(expected.SequenceEqual(actual), "Actual and expected arrays are not equal");
+        //Assert.True(expected.SequenceEqual(actual), "Actual and expected arrays are not equal");
+        actual.Should().BeEquivalentTo(personResponses);  //having the same elements
+        actual.Should().BeInAscendingOrder(x => x.PersonName);   //but with the expected order
     }
     #endregion
 

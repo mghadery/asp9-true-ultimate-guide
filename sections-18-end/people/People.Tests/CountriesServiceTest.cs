@@ -1,3 +1,6 @@
+using EntityFrameworkCore.Testing.Moq;
+using Microsoft.EntityFrameworkCore;
+using People.Entities;
 using People.ServiceContracts.DTOs;
 using People.ServiceContracts.Interfaces;
 using People.Services;
@@ -14,7 +17,14 @@ public class CountriesServiceTest
 
     public CountriesServiceTest(ITestOutputHelper testOutputHelper)
     {
-        _countriesService = new CountriesService(new Entities.AppDbContext());
+        //var countries = new List<Country>();
+        //new List<Country>() {
+        // new Country() { CountryId = Guid.NewGuid() , CountryName="Iran"},
+        // new Country() { CountryId = Guid.NewGuid(), CountryName="Italy" } };
+        //var appDbContext = Create.MockedDbContextFor<AppDbContext>(new DbContextOptionsBuilder().Options);
+        var appDbContext = Create.MockedDbContextFor<AppDbContext>();
+
+        _countriesService = new CountriesService(appDbContext);
         _testOutputHelper = testOutputHelper;
     }
 
@@ -37,7 +47,7 @@ public class CountriesServiceTest
 
     //when AddCountryRequest.CountryName is null => ArgumentException
     [Fact]
-    public async Task  AddCountry_CountryNameIsNull()
+    public async Task AddCountry_CountryNameIsNull()
     {
         //Arrange
         AddCountryRequest? addCountryRequest = new() { CountryName = null };

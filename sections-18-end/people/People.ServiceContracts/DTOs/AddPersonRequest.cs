@@ -19,7 +19,7 @@ public record AddPersonRequest
     public GenderOptions GenderOptions { get; init; }
     public string? Address { get; init; }
     public bool ReceiveNewsLetters { get; init; }
-    public Guid? CountryId { get; init; }
+    public Guid? CountryId { get; set; }
 
     public static explicit operator Person(AddPersonRequest addPersonRequest)
     {

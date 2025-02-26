@@ -4,11 +4,11 @@ namespace People.Entities;
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext()
-    {
+    //public AppDbContext()
+    //{
         
-    }
-    public AppDbContext(DbContextOptions options):base(options)
+    //}
+    public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
     {        
     }
     public virtual DbSet<Country> Countries { get; set; }
