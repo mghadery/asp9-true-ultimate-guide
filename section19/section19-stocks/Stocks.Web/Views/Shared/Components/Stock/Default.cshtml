@@ -1,0 +1,22 @@
+﻿@model StockDetails
+
+@if (string.IsNullOrEmpty(ViewBag.Error))
+{
+    <div class="w-100">
+        <image style="width:100px" src="@Model.Logo"/>
+        <div class="">@(Model.Name)(Model.Symbol)</div>
+        <div class="box grey-back">@Model.FinnhubIndustry</div>
+        <div class="flex">
+            <div>Exchange:</div>
+            <div class="box grey-back">@Model.Exchange</div>
+        </div>
+        <div class="flex">
+            <div class="text-grey">@Model.Currency</div>
+            <div class="">@Model.Price</div>
+        </div>
+    </div>
+}
+else
+{
+    <h3 class="text-red">@ViewBag.Error</h3>
+}

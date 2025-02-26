@@ -15,6 +15,7 @@ public class FinnhubService(IConfiguration configuration, IHttpClientFactory htt
             HttpRequestMessage httpRequestMessage = 
                 new HttpRequestMessage(HttpMethod.Get, url);
             HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(httpRequestMessage);
+            if (httpResponseMessage.StatusCode != System.Net.HttpStatusCode.OK) return null;
             Stream stream = await httpResponseMessage.Content.ReadAsStreamAsync();
             using (StreamReader streamReader = new StreamReader(stream))
             {
@@ -35,6 +36,7 @@ public class FinnhubService(IConfiguration configuration, IHttpClientFactory htt
             HttpRequestMessage httpRequestMessage =
                 new HttpRequestMessage(HttpMethod.Get, url);
             HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(httpRequestMessage);
+            if (httpResponseMessage.StatusCode != System.Net.HttpStatusCode.OK) return null;
             Stream stream = await httpResponseMessage.Content.ReadAsStreamAsync();
             using (StreamReader streamReader = new StreamReader(stream))
             {
