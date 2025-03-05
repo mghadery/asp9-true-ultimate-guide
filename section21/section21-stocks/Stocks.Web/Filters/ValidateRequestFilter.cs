@@ -1,7 +1,5 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Stocks.ServiceContracts.DTOs;
 using Stocks.ServiceContracts.Interfaces;
 
 namespace Stocks.Web.Filters;
@@ -21,7 +19,7 @@ public class ValidateRequestFilter(ILogger<ValidateRequestFilter> logger) : IAct
         var controllerName = context.ActionDescriptor.RouteValues["controller"];
         var actionName = context.ActionDescriptor.RouteValues["action"];
         var filterName = this.GetType().Name;
-        var request = context.ActionArguments["request"] as OrderRequest;
+        var request = context.ActionArguments["request"] as IOrderRequest;
 
         var ModelState = ((Controller)context.Controller).ModelState;
         ModelState.Remove("DateAndTimeOfOrder");

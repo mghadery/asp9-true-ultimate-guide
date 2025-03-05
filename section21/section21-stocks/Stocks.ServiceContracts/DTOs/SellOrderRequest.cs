@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Stocks.ServiceContracts.DTOs;
 
-public record SellOrderRequest : OrderRequest
+public record SellOrderRequest : IOrderRequest
 {
     [Required]
     public string? StockSymbol { get; set; }
