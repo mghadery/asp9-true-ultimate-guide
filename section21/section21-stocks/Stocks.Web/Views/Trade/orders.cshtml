@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Orders";
+}
+@model Orders
+
+<a asp-action="OrdersAsPdf" asp-controller="Trade" class="link-hover">Create Pdf</a>
+<div class="flex">
+    <div class="flex-direction-vertical">
+        <h3>Buy orders</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>StockSymbol</th>
+                    <th>StockName</th>
+                    <th>DateAndTimeOfOrder</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (BuyOrderResponse response in Model.BuyOrders)
+                {
+                    <tr>
+                        <td>@response.StockSymbol</td>
+                        <td>@response.StockName</td>
+                        <td>@response.DateAndTimeOfOrder</td>
+                        <td>@response.Quantity</td>
+                        <td>@response.Price</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="flex-direction-vertical">
+        <h3>Sell orders</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>StockSymbol</th>
+                    <th>StockName</th>
+                    <th>DateAndTimeOfOrder</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (SellOrderResponse response in Model.SellOrders)
+                {
+                    <tr>
+                        <td>@response.StockSymbol</td>
+                        <td>@response.StockName</td>
+                        <td>@response.DateAndTimeOfOrder</td>
+                        <td>@response.Quantity</td>
+                        <td>@response.Price</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

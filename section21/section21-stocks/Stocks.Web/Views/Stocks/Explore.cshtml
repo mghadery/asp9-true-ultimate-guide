@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Explore";
+}
+
+@model List<Stock>
+
+<div class="flex">
+    <div class="w-40">
+        @foreach (Stock stock in Model)
+        {
+            <a asp-action="Explore" asp-controller="Stocks" asp-route-stockSymbol="@stock.StockSymbol">
+                <div class="flex-direction-vertical box">
+                    <div>@stock.StockSymbol</div>
+                    <div>@stock.StockName</div>
+                </div>
+            </a>
+        }
+    </div>
+    @if (ViewBag.StockSymbol is not null)
+    {
+        string symbol = ViewBag.StockSymbol;
+        <div class="flex-1">
+            @* <vc:stock stock-symbol="@symbol"></vc:stock> *@  @* not work!!!! *@
+            @await Component.InvokeAsync("Stock", new { stockSymbol = symbol })
+        </div>
+    }
+</div>
+
