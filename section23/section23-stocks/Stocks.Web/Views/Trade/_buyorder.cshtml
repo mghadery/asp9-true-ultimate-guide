@@ -1,0 +1,22 @@
+﻿@model BuyOrderRequest
+@{
+    string idPrefix = "buyForm-";
+}
+
+<form asp-controller="trade" asp-action="buyorder" method="post" id="buyform">
+    <input type="hidden" asp-for="StockSymbol" id="@($"{idPrefix}StockSymbol")" />
+    <input type="hidden" asp-for="StockName" id="@($"{idPrefix}StockName")" />
+    <input type="hidden" asp-for="DateAndTimeOfOrder" id="@($"{idPrefix}DateAndTimeOfOrder")" />
+    <input type="hidden" asp-for="Quantity" id="@($"{idPrefix}Quantity")" />
+    <input type="hidden" asp-for="Price" id="@($"{idPrefix}Price")" />
+    <button onclick="return buyAction()" type="submit" class="button button-green-back">Buy</button>
+</form>
+
+<script>
+    function buyAction() {
+        document.getElementById("buyform").querySelector('input[name="Quantity"]').value = document.getElementById("Quantity").value;
+        document.getElementById("buyform").querySelector('input[name="Price"]').value = document.getElementById("price").innerHTML;
+        return true;
+    }
+
+</script>
