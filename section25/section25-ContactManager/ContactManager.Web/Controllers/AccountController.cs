@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace ContactManager.Web.Controllers;
 
 [Route("[Controller]")]
-[AllowAnonymous]
+//[AllowAnonymous]
+[Authorize(Policy = "NotLoggedIn")]
 public class AccountController(IIdentityService identityService) : Controller
 {
     [Route("[Action]")]

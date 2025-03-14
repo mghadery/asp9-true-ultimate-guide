@@ -42,8 +42,11 @@ builder.Services.AddAuthorization(options =>
 {
     options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
     options.AddPolicy("p1", options => options.RequireRole("RoleName"));
+    options.AddPolicy("NotLoggedIn", opt => opt.RequireAssertion(context =>
+    !context.User.Identity.IsAuthenticated));
 }
 );
+
 builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Account/Login"
 );
