@@ -1,0 +1,9 @@
+﻿@MinimalAPI_HostAddress = http://localhost:5034
+
+GET {{MinimalAPI_HostAddress}}/
+
+###
+
+POST {{MinimalAPI_HostAddress}}/
+
+###
