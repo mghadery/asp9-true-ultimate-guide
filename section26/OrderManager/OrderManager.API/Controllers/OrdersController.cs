@@ -1,0 +1,78 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using OrderManager.Core.DTOs;
+using OrderManager.Core.ServiceContracts;
+
+namespace OrderManager.API.Controllers
+{
+    [Route("api/[Controller]")]
+    [ApiController]
+    public class OrdersController(IOrdersService ordersService) : ControllerBase
+    {
+        [HttpGet]
+        public async Task<ActionResult> GET()
+        {
+            var orders = await ordersService.GetAll();
+            return Ok(orders);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GET(Guid id)
+        {
+            var order = await ordersService.GetById(id);
+            return Ok(order);
+        }
+
+        [HttpPost("{customerName}")]
+        public async Task<ActionResult> Post(string customerName)
+        {
+            var order = await ordersService.Create(customerName);
+            return Ok(order);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var success = await ordersService.Delete(id);
+            return success ? NoContent() : NotFound(new ProblemDetails()
+            {
+                Detail = "Not found",
+                Status = StatusCodes.Status404NotFound,
+                Title = "Delete error"
+            }
+            );
+        }
+
+        [HttpGet("{orderId}/items")]
+        public async Task<ActionResult> GetItemsByOrderId(Guid orderId)
+        {
+            var items = await ordersService.GetItemsByOrderId(orderId);
+            return Ok(items);
+        }
+
+        [HttpPost("{orderId}/items")]
+        public async Task<ActionResult> AddItem(Guid orderId, OrderItemAddRequest orderItemAddRequest)
+        {
+            if (orderId != orderItemAddRequest.OrderId)
+                return BadRequest("Order ids don't match");
+            var item = await ordersService.AddItem(orderItemAddRequest);
+            return Ok(item);
+        }
+
+        [HttpPut("{orderId}/items/{id}")]
+        public async Task<ActionResult> UpdateItem(Guid orderId, Guid id, OrderItemUpdateRequest orderItemUpdateRequest)
+        {
+            if (orderId != orderItemUpdateRequest.OrderId || id != orderItemUpdateRequest.OrderItemId)
+                return BadRequest("Ids don't match");
+            var item = await ordersService.UpdateItem(orderItemUpdateRequest);
+            return Ok(item);
+        }
+
+        [HttpDelete("{orderId}/items/{id}")]
+        public async Task<ActionResult> DeleteItem(Guid orderId, Guid id)
+        {
+            var item = await ordersService.DeleteItem(orderId, id);
+            //TODO: Delete order if no item is left
+            return item ? Ok() : NotFound();
+        }
+    }
+}
