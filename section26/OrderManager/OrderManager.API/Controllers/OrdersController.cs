@@ -9,28 +9,28 @@ namespace OrderManager.API.Controllers
     public class OrdersController(IOrdersService ordersService) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult> GET()
+        public async Task<ActionResult> GetAllOrders()
         {
             var orders = await ordersService.GetAll();
             return Ok(orders);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GET(Guid id)
+        public async Task<ActionResult> GetOrderById(Guid id)
         {
             var order = await ordersService.GetById(id);
             return Ok(order);
         }
 
         [HttpPost("{customerName}")]
-        public async Task<ActionResult> Post(string customerName)
+        public async Task<ActionResult> AddOrder(string customerName)
         {
             var order = await ordersService.Create(customerName);
             return Ok(order);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(Guid id)
+        public async Task<ActionResult> DeleteOrder(Guid id)
         {
             var success = await ordersService.Delete(id);
             return success ? NoContent() : NotFound(new ProblemDetails()
