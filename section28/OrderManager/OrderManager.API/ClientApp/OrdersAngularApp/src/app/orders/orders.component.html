@@ -1,0 +1,51 @@
+<h3>Create New Order</h3>
+<div class="form-container">
+  <form [formGroup]="addOrderForm" (ngSubmit)="addOrderSubmitted()">
+    <div class="form-field flex">
+      <div class="w-25">
+        <label for="CustomerName" class="form-label pt">Customer Name</label>
+      </div>
+      <div class="flex-1">
+        <input type="text" class="form-input" formControlName="customerName" />
+        <span class="text-red" *ngIf="(addOrderForm_customerName_control.touched || isAddOrderFormSubmitted) && addOrderForm_customerName_control.errors?.['required']">Customer name is blank</span>
+      </div>
+    </div>
+    <div class="form-field flex">
+      <div class="w-25"></div>
+      <div class="flex-1">
+        <button type="submit" class="button button-green-back">Create</button>
+      </div>
+    </div>
+</form>
+</div>
+<h2>Orders</h2>
+<div class="table-container">
+  <table class="table w-100" [formGroup]="editOrderForm">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Customer Name</th>
+        <th>Order Number</th>
+        <th>Date</th>
+        <th>Amount</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody formArrayName ="orders">
+      <tr *ngFor="let order of orders; let i = index">
+        <td>{{i + 1}}</td>
+        <td [formGroupName]="i">
+          <input type="text" formControlName="customerName" [ngClass]="{'border-less-textbox':order.orderId != editOrderId, 'form-input':order.orderId == editOrderId}" [disableControl]="order.orderId != editOrderId"/> 
+        </td>
+        <td>{{order.orderNumber}}</td>
+        <td>{{order.orderDate}}</td>
+        <td>{{order.totalAmount}}</td>
+        <td>
+          <button type="button" class="button button-blue-back" (click)="editClicked(order.orderId)" *ngIf="order.orderId != editOrderId">Edit</button>
+          <button type="submit" class="button button-blue-back" (click)="updateClicked(i)" *ngIf="order.orderId == editOrderId">Update</button>
+          <button type="button" class="button button-red-back ml" (click)="deleteClicked(order, i)" *ngIf="order.orderId != editOrderId">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OrderManager.API</name>
+    </assembly>
+    <members>
+        <member name="M:OrderManager.API.Controllers.ver1.OrdersController.GetAllOrders">
+            <summary>
+            Get all orders sorted by OrderDate
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OrderManager.API.Controllers.ver2.OrdersController.GetAllOrders">
+            <summary>
+            Get all orders sorted by OrderDate
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
