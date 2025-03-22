@@ -1,0 +1,56 @@
+<div class="w-60 margin-auto">
+  <div class="form-container">
+    <h2>Register</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="registerFormSubmitted()">
+
+      <div class="form-field flex">
+        <div class="w-25">
+          <label class="form-label pt" for="userName">User Name</label>
+        </div>
+        <div class="flex-1">
+          <input type="text" class="form-input" id="userName" formControlName="userName" />
+          <span class="text-red" *ngIf="(isRegisterFormSubmitted || registerForm_userName.touched) && registerForm_userName.errors?.['required']">blank userName</span>
+        </div>
+      </div>
+
+      <div class="form-field flex">
+        <div class="w-25">
+          <label class="form-label pt" for="password">password</label>
+        </div>
+        <div class="flex-1">
+          <input type="password" class="form-input" id="password" formControlName="password" />
+          <span class="text-red" *ngIf="(isRegisterFormSubmitted || registerForm_password.touched) && registerForm_password.errors?.['required']">blank password</span>
+        </div>
+      </div>
+
+      <div class="form-field flex">
+        <div class="w-25">
+          <label class="form-label pt" for="passwordConfirm">passwordConfirm</label>
+        </div>
+        <div class="flex-1">
+          <input type="password" class="form-input" id="passwordConfirm" formControlName="passwordConfirm" />
+          <span class="text-red" *ngIf="(isRegisterFormSubmitted || registerForm_passwordConfirm.touched) && registerForm_passwordConfirm.errors?.['required']">blank passwordConfirm</span>
+        </div>
+      </div>
+
+      <div class="form-field flex">
+        <div class="w-25">
+          <label class="form-label pt" for="personName">personName</label>
+        </div>
+        <div class="flex-1">
+          <input type="text" class="form-input" id="personName" formControlName="personName" />
+          <span class="text-red" *ngIf="(isRegisterFormSubmitted || registerForm_personName.touched) && registerForm_personName.errors?.['required']">blank personName</span>
+        </div>
+      </div>
+
+      <div class="form-field flex">
+        <div class="w-25">
+        </div>
+        <div class="flex-1">
+          <button type="submit" class="button button-green-back">Register</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

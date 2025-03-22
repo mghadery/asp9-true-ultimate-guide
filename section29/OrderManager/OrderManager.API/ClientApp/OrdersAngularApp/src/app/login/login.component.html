@@ -1,0 +1,36 @@
+<div class="w-60 margin-auto">
+  <div class="form-container">
+    <h2>Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="loginFormSubmitted()">
+
+      <div class="form-field flex">
+        <div class="w-25">
+          <label class="form-label pt" for="userName">User Name</label>
+        </div>
+        <div class="flex-1">
+          <input type="text" class="form-input" id="userName" formControlName="userName" />
+          <span class="text-red" *ngIf="(isLoginFormSubmitted || loginForm_userName.touched) && loginForm_userName.errors?.['required']">blank userName</span>
+        </div>
+      </div>
+
+      <div class="form-field flex">
+        <div class="w-25">
+          <label class="form-label pt" for="password">password</label>
+        </div>
+        <div class="flex-1">
+          <input type="password" class="form-input" id="password" formControlName="password" />
+          <span class="text-red" *ngIf="(isLoginFormSubmitted || loginForm_password.touched) && loginForm_password.errors?.['required']">blank password</span>
+        </div>
+      </div>
+
+      <div class="form-field flex">
+        <div class="w-25">
+        </div>
+        <div class="flex-1">
+          <button type="submit" class="button button-green-back">Login</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
